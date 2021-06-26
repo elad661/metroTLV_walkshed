@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="he_IL">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>MetroTLV Service Area | איזור השירות של רשת המתע"ן</title>
+
+        <!--
+            This app uses hand-made HTML markup, hand-made CSS, vanilla JavaScript. No preprocessors, no transpiling.
+            Only natural ingredients.
+        -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Alef&display=swap" rel="stylesheet">
+        <script src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
+        <link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet'>
+        <link href="style.css?24" rel="stylesheet">
+    </head>
+    <body>
+        <div id="desclaimer_bg">
+            <div id="desclaimer">
+                <h1>במרחק הליכה</h1>
+                <h2>איזור השירות של רשת הסעת ההמונים</h2>
+                <p>
+                    הדף הזה מציג את איזור השירות של רשת המתע"ן המתוכננת בגוש דן - קווי הרכבת הקלה, קווי המטרו, והקו החום.
+                </p>
+                <p>
+                    "איזור השרות" משמעו האיזור שאליו ניתן להגיע ברגל, בזמן הליכה סביר מהתחנות.
+                    (ידוע גם בשם "איזוכרונים" ולפעמים גם "אגן הליכה" או walkshed).
+                </p>
+                <p>
+                    שימו לב - זמני ההליכה שמוצגים כאן הם חישוב גס לפי רשת הרחובות הקיימת (נכון ליוני 2021), תוך הנחה של מהירות הליכה 4.5 קמ"ש.
+                    החישוב מוצג כהערכה בלבד, ולא מתחשב בטופוגרפיה, תזמון רמזורים, מזג אוויר, כושר גופני, צפיפות מדרכות, או מיקומי הכניסות לתחנות.
+                </p>
+                <p>
+                    הדף הזה הוא פרויקט אישי של אדם פרטי, ואינו באחריות אף עיריה, ראשות מקומית, מדינה, משרד ממשלתי, או תאגיד.
+                    המידע מוגש ללא אחריות וללא הבטחה לנכונותו או התאמתו לכל מטרה.
+                </p>
+                <p>
+                </p>
+                <button>
+                    הבנתי, הצג מפה
+                </button>
+            </div>
+        </div>
+        <main>
+            <noscript>
+                JavaScript is required for using this application.
+            </noscript>
+            <div id="map">
+                Loading map...
+            </div>
+            <aside id="sidebar">
+                <section>
+                    <h2>מקרא</h2>
+                    <ul class="distances">
+                        <li class="five_minutes">
+                            5 דקות
+                        </li>
+                        <li class="ten_minutes">
+                            10 דקות
+                        </li>
+                        <li class="fifteen_minutes">
+                            15 דקות
+                        </li>
+                    </ul>
+                </section>
+                <section id="layer_selection">
+                    <h3>קווים</h3>
+                    <ul>
+                        <li>
+                            <label><input type="checkbox" data-layer="lrt">רק"ל (2027)
+                                <ul class="lrt_lines">
+                                    <li class="red_line">
+                                        <img src="images/lrt_red.svg" aria-hidden="true">
+                                        קו אדום
+                                    </li>
+                                    <li class="green_line">
+                                        <img src="images/lrt_green.svg" aria-hidden="true">
+                                        קו ירוק
+                                    </li>
+                                    <li class="purple_line">
+                                        <img src="images/lrt_purple.svg" aria-hidden="true">
+                                        קו סגול
+                                    </li>
+                                </ul>
+                            </label>
+                        </li>
+                        <li>
+                            <label><input type="checkbox" data-layer="metro">מטרו (2040)
+                                <ul class="metro_lines">
+                                    <li class="m1">
+                                        <img src="images/m1.svg" aria-hidden="true">
+                                        מ1 | M1
+                                    </li>
+                                    <li class="m2">
+                                        <img src="images/m2.svg" aria-hidden="true">
+                                        מ2 | M2
+                                    </li>
+                                    <li class="m3">
+                                        <img src="images/m3.svg" aria-hidden="true">
+                                        מ3 | M3
+                                    </li>
+                                </ul>
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="checkbox" data-layer="brown">
+                                BRT
+                                <ul>
+                                    <li>
+                                        <img src="images/brt_brown.svg" aria-hidden="true">
+                                        הקו החום
+                                    </li>
+                                </ul>
+                            </label>
+                        </li>
+                    </ul>
+                </section>
+            </aside>
+        </main>
+        <footer>
+            <p>
+            Made by <a href="https://eladalfassa.com">Elad Alfassa</a>.
+            </p>
+            <p>
+            Routes and station data from the MoT's GIS System <a href="https://geo.mot.gov.il">geo.mot.gov.il</a>.
+            </p>
+            <p>
+            Map data © <a href="https://openstreetmap.org">OpenStreetMap contributors</a>.
+            Processed using <a href="https://github.com/gboeing/osmnx">osmnx</a>. <a href="https://github.com/elad661/metroTLV_walkshed">Source code available</a>
+            </p>
+        </footer>
+        <script src="main.js"></script>
+    </body>
+</html>
