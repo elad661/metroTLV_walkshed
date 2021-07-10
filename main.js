@@ -93,6 +93,7 @@ class LayerManager {
     constructor(map) {
         this.map = map;
         this.enabledLayers = new Set(['lrt']);
+        this.enabledTimes = new Set(['5', '10', '15']);
         this._syncCheckboxState();
         this._loadLayers();
         this._registerEventHandlers();
@@ -180,13 +181,14 @@ class LayerManager {
     }
 
     _registerEventHandlers() {
-        document.querySelectorAll('#layer_selection input').forEach((node) => {
+        document.querySelectorAll('#layer_selection input, #time_selection input').forEach((node) => {
             node.addEventListener('change', (event) => {
                 const layerKey = event.target.dataset.layer;
-                if (this.enabledLayers.has(layerKey)){
-                    this.enabledLayers.delete(layerKey);
+                const layerSet = ['5', '10', '15'].includes(layerKey) ? this.enabledTimes : this.enabledLayers;
+                if (layerSet.has(layerKey)){
+                    layerSet.delete(layerKey);
                 } else {
-                    this.enabledLayers.add(layerKey);
+                    layerSet.add(layerKey);
                 }
                 this.syncLayerVisibility();
             });
@@ -228,6 +230,10 @@ class LayerManager {
             const layerKey = node.dataset.layer;
             node.checked = this.enabledLayers.has(layerKey);
         });
+        document.querySelectorAll('#time_selection input').forEach((node) => {
+            const layerKey = node.dataset.layer;
+            node.checked = this.enabledTimes.has(layerKey);
+        });
     }
 
     _getLayerVisibility(key) {
@@ -250,9 +256,11 @@ class LayerManager {
             });
         });
         Object.keys(MERGED_ISOCHRONE_LAYERS).forEach((key) => {
-            const id = `${key}_merged_isochrones`;
+            const layerId = `${key}_merged_isochrones`;
             const visibility = this._getCurrentIsochroneLayer() === key ? 'visible' : 'none';
-            this.map.setLayoutProperty(`${key}_merged_isochrones`, 'visibility', visibility);
+            this.map.setLayoutProperty(layerId, 'visibility', visibility);
+            // filter isochrones according to selected times
+            this.map.setFilter(layerId, ['in', ['get', 'time'], ['literal', Array.from(this.enabledTimes).map(time => parseInt(time))]]);
         });
     }
 
